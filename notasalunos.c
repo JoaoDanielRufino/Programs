@@ -3,7 +3,7 @@
 int main(){
 	
 	int i,j,n;
-	float notas[50][50],soma[3]={0.0},media[3],max=0.0;
+	float notas[50][50],soma[3]={0.0},media,max=0.0;
 	
 	printf("Digite o numero de alunos: ");
 	scanf("%d", &n);
@@ -22,8 +22,8 @@ int main(){
 	printf("-----------------------------------------\n");
 	 
 	for(i=0; i<3; i++){
-		media[i] = soma[i]/n;	
-		printf("Media da avaliacao[%d]: %.1f\n", i+1,media[i]);
+		media = soma[i]/n;	
+		printf("Media da avaliacao[%d]: %.1f\n", i+1,media);
 	}
 	
 	printf("\nNotas da terceira avaliacao normalizadas:\n\nAv1\tAv2\tAv3\n");
