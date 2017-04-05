@@ -1,52 +1,40 @@
 #include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-
-typedef struct Aluno{
-	int nota[3];
-	char nome[40];
-}Aluno;
-
-int compare(const void *a, const void *b){
-	int x;
-	x = strcmp((*(struct Aluno*)a).nome, (*(struct Aluno*)b).nome);
-	if(x==0) return 0;
-	if(x>0) return 1;
-	else return -1;
-}
 
 int main(){
 	
 	int i,j,n;
+	float notas[50][50],soma[3]={0.0},media[3],max=0.0;
 	
-	printf("Digite a quantidade de alunos: ");
+	printf("Digite o numero de alunos: ");
 	scanf("%d", &n);
-	printf("\n");
-	Aluno a[n];
 	
 	for(i=0; i<n; i++){
-		fflush(stdin);
-		printf("Nome do aluno[%d]: ", i+1);
-		scanf("%[^\n]", a[i].nome);
-		fflush(stdin);
-			for(j=0; j<3; j++){
-				printf("Nota[%d]: ", j+1);
-				scanf("%d", &a[i].nota[j]);
-			}
+		for(j=0; j<3; j++){
+			printf("Nota[%d] do aluno[%d]: ", j+1,i+1);
+			scanf("%f", &notas[i][j]);
+			soma[j] += notas[i][j]; 
+		}
+		if(max < notas[i][2])
+			max = notas[i][2];
 		printf("\n");
 	}
 	
-	qsort(a,n,sizeof(struct Aluno),compare);
-	
-	printf("\n");
-	for(i=0; i<n; i++){
-		printf("%s\t", a[i].nome);
-			for(j=0; j<3; j++){	
-				printf("%d  ", a[i].nota[j]);
-			}
-		printf("\n");
+	printf("-----------------------------------------\n");
+	 
+	for(i=0; i<3; i++){
+		media[i] = soma[i]/n;	
+		printf("Media da avaliacao[%d]: %.1f\n", i+1,media[i]);
 	}
 	
+	printf("\nNotas da terceira avaliacao normalizadas:\n\nAv1\tAv2\tAv3\n");
+	
+	for(i=0; i<n; i++){	
+		notas[i][2] *= 	(10.0/max);	
+		for(j=0; j<3; j++){
+			printf("%.1f\t", notas[i][j]);
+		}
+		printf("\n");
+	}
 	
 	return 0;
 }
