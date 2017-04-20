@@ -76,7 +76,7 @@ void cadastro(Pessoa *agenda){
 	printf("Estado: ");
 	scanf("%[^\n]", agenda[indice].estado); fflush(stdin);
 	 
-	printf("cidade: ");
+	printf("Cidade: ");
 	scanf("%[^\n]", agenda[indice].cidade); fflush(stdin);
 	 
 	printf("Bairro: ");
