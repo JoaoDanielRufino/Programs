@@ -1,13 +1,14 @@
-#include<stdio.h>
-#include<math.h>
-#include<conio.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#include <conio.h>
 
 typedef struct complexo{
 	float x,y;
 }Complexos;
 
 int menu();
-void mudulo(Complexos c1);
+void modulo(Complexos c1);
 void adicao(Complexos c1, Complexos c2);
 void subtracao(Complexos c1, Complexos c2);
 void multiplicacao(Complexos c1, Complexos c2);
