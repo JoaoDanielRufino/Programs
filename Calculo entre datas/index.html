@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html lang="pt-br">
+
+  <head>
+    <meta charset="utf-8">
+    <title>Diferença entre datas</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+
+    <script src="jq_mask.js"></script>
+
+    <script type="text/javascript">
+
+      function Data(descricao, dataInicio, dataFim, dataInicioString, dataFimString){
+        this.descricao = descricao;
+        this.dataInicio = dataInicio;
+        this.dataFim = dataFim;
+        this.dataInicioString = dataInicioString;
+        this.dataFimString = dataFimString;
+        this.diferencaTotalEmDias = function(){
+          return Math.floor((this.dataFim - this.dataInicio) / (1000 * 60 * 60 * 24));
+        };
+        this.diferencaEmAnos = function(){
+          return Math.floor(this.diferencaTotalEmDias() / 365);
+        };
+        this.diferencaEmMeses = function(){
+          var aux = this.diferencaTotalEmDias() % 365;
+          return Math.floor(aux / 30);
+        };
+        this.diferencaEmDias = function(){
+          return (this.diferencaTotalEmDias() % 365) % 30;
+        };
+      }
+
+      function converteData(data){
+        var tmp = data.split('/');
+        return tmp[1] + '/' + tmp[0] + '/' + tmp[2];
+      }
+
+      var datas = new Array();
+
+      $(document).ready(function(){
+        $('#d-inicio').mask('00/00/0000');
+
+        $('#d-fim').mask('00/00/0000');
+
+        $('#dif').click(function(){
+          var result = '<h2>Resultados</h2>';
+          var diferencaTotalEmDias = 0;
+          var diferencaEmDias;
+          var diferencaEmMeses;
+          var diferencaEmAnos;
+
+          for(var i = 0; i < datas.length; i++){
+            result += '<p>' + datas[i].descricao + ': ' + datas[i].dataInicioString + ' - ' + datas[i].dataFimString +
+            '</p><p>Diferença: ' + datas[i].diferencaEmAnos() + ' Ano(s) / ' + datas[i].diferencaEmMeses() + ' Mês(es) / ' +
+            datas[i].diferencaEmDias() + ' Dia(s)</p><hr/>';
+
+            diferencaTotalEmDias += datas[i].diferencaTotalEmDias();
+          }
+
+          diferencaEmAnos = Math.floor(diferencaTotalEmDias / 365);
+          diferencaEmMeses = Math.floor((diferencaTotalEmDias % 365) / 30);
+          diferencaEmDias = (diferencaTotalEmDias % 365) % 30;
+
+          document.getElementById('res').innerHTML = result + '<h4>Total: ' + diferencaEmAnos + ' Ano(s) / ' +
+          diferencaEmMeses + ' Mês(es) / ' + diferencaEmDias + ' Dia(s)';
+
+          datas = [];
+        });
+
+        $('#adi').click(function(){
+          var tmp1 = converteData($('#d-inicio').val());
+          var tmp2 = converteData($('#d-fim').val());
+
+          var di = new Date(tmp1);
+          var df = new Date(tmp2);
+          var des = $('#descricao').val();
+
+          datas.push(new Data(des, di, df, $('#d-inicio').val(), $('#d-fim').val()));
+
+          $('#descricao').val('');
+          $('#d-inicio').val('');
+          $('#d-fim').val('');
+        });
+      });
+
+    </script>
+  </head>
+
+  <body class="bg-light">
+    <div class="container">
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-4">Diferença entre datas</h1>
+          <p class="lead">Este programa calcula a diferença entre datas, sendo possível adicionar mais de duas datas, o que resultará na diferença total entre elas.</p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <h4>Descrição da data</h4>
+          <input id="descricao" type="text" class="form-control" placeholder="Ex: Início trabalho"></input>
+        </div>
+
+        <div class="col-md-4">
+          <h4>Data início</h4>
+          <input id="d-inicio" type="type" class="form-control" placeholder="DD/MM/YYYY"></input>
+        </div>
+
+        <div class="col-md-4">
+          <h4>Data fim</h4>
+          <input id="d-fim" type="type" class="form-control" placeholder="DD/MM/YYYY"></input>
+        </div>
+      </div>
+      <br/>
+
+      <div class="row">
+        <div class="col-md-10">
+          <button id="dif" type="button" class="btn btn-primary">Calcular diferença</button>
+        </div>
+
+        <div class="col-md-2 pl-5">
+          <button id="adi" type="button" class="btn btn-primary">Adicionar data</button>
+        </div>
+      </div>
+      <br/>
+
+      <div class="row">
+        <div class="col-md-12" id="res">
+
+        </div>
+      </div>
+    </div>
+  </body>
+
+</html>
